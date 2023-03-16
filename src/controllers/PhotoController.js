@@ -13,13 +13,20 @@ class PhotoClontroller {
         });
       }
 
-      const { aluno_id } = req.body;
+      try {
+        const { aluno_id } = req.body;
 
-      const { originalname, filename } = req.file;
+        const { originalname, filename } = req.file;
 
-      const foto = await Foto.create({ originalname, filename, aluno_id });
+        const foto = await Foto.create({ originalname, filename, aluno_id });
 
-      return res.json(foto);
+        return res.json(foto);
+      } catch (e) {
+        const { aluno_id } = req.body;
+        return res.status(400).json({
+          errors: [`Aluno com o  ID ${aluno_id} não existe`],
+        });
+      }
     });
   }
 }
